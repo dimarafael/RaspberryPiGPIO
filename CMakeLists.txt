@@ -19,6 +19,7 @@ qt_add_qml_module(appRaspberryPiGPIO
     QML_FILES Main.qml
     SOURCES gpioitem.h gpioitem.cpp
     SOURCES gpiolistmodel.h gpiolistmodel.cpp
+    SOURCES gpiocore.h gpiocore.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
