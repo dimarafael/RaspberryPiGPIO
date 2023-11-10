@@ -3,6 +3,7 @@
 
 #include <QAbstractListModel>
 #include <QObject>
+#include <QSettings>
 #include "gpioitem.h"
 
 class GPIOListModel : public QAbstractListModel

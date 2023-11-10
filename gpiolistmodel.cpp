@@ -52,6 +52,29 @@ GPIOListModel::GPIOListModel(QObject *parent)
         }
         m_GPIOList.append(gpioItem);
     }
+
+    QSettings settings("Dima", "RaspberryPiGPIO");
+    int settingsSize = settings.beginReadArray("GPIO");
+    qDebug() << "Settings size =" << settingsSize;
+    if(settingsSize == m_GPIOList.size()){ // read settings
+        qDebug() << "Reading settings";
+        for(int i = 0; i < settingsSize; i++){
+            settings.setArrayIndex(i);
+            int mode = settings.value("mode").toInt();
+            if(mode >= 0 && mode < 2) m_GPIOList[i]->setMode(mode);
+            else m_GPIOList[i]->setMode(0);
+        }
+        settings.endArray();
+    } else{ // create settings
+        qDebug() << "Creating settings";
+        settings.endArray();
+        settings.beginWriteArray("GPIO");
+        for(int i = 0; i < m_GPIOList.size(); i++){
+            settings.setArrayIndex(i);
+            settings.setValue("mode", 0);
+        }
+        settings.endArray();
+    }
 }
 
 int GPIOListModel::rowCount(const QModelIndex &parent) const
