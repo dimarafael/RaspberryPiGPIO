@@ -111,4 +111,9 @@ void GPIOListModel::changeMode(int pos, int mode)
     beginResetModel();
     m_GPIOList[pos]->setMode(mode);
     endResetModel();
+    QSettings settings("Dima", "RaspberryPiGPIO");
+    settings.beginWriteArray("GPIO", 40);
+    settings.setArrayIndex(pos);
+    settings.setValue("mode", mode);
+    settings.endArray();
 }
