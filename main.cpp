@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "gpiocore.h"
 #include "gpiolistmodel.h"
 
 int main(int argc, char *argv[])
@@ -13,6 +14,8 @@ int main(int argc, char *argv[])
     QObject::connect(gpioListModel,&GPIOListModel::setGPIOout,&app, [](int GPIOnumber, bool state){
         qDebug() << "GPIOnumber =" << GPIOnumber << " state =" << state;
     });
+
+    GPIOCore *gpioCore = new GPIOCore(&app);
 
     const QUrl url(u"qrc:/RaspberryPiGPIO/Main.qml"_qs);
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
