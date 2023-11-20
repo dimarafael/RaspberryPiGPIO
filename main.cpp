@@ -17,6 +17,10 @@ int main(int argc, char *argv[])
 
     GPIOCore *gpioCore = new GPIOCore(&app);
 
+    QObject::connect(gpioListModel, &GPIOListModel::configureGPIO, gpioCore, &GPIOCore::configureGPIO);
+
+    gpioListModel->initialConfiguration();
+
     const QUrl url(u"qrc:/RaspberryPiGPIO/Main.qml"_qs);
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
         &app, []() { QCoreApplication::exit(-1); },

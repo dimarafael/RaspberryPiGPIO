@@ -23,8 +23,11 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const override;
     virtual QHash<int, QByteArray> roleNames() const override;
 
+    void initialConfiguration();
+
 signals:
     void setGPIOout(int GPIOnumber, bool state);
+    void configureGPIO(int position, int mode); // 0 - input, 1 - output
 
 public slots:
     void changeMode(int pos, int mode);

@@ -1,7 +1,7 @@
 #include "gpiocore.h"
 #include <fcntl.h>
 #include <sys/mman.h>
-#include<unistd.h>
+#include <unistd.h>
 #include <QDebug>
 #include <QCoreApplication>
 
@@ -31,5 +31,25 @@ GPIOCore::GPIOCore(QObject *parent)
         }
 
     }
+
+}
+
+void GPIOCore::configureGPIO(int position, int mode)  // 0 - input, 1 - output
+{
+    qDebug() << "configureGPIO: GPIO=" << position << ", mode=" << mode;
+    if (m_gpio != nullptr){
+        *(m_gpio + (unsigned)(position/10)) &= ~(7<<((position%10)*3));
+        if (mode == 1)
+            *(m_gpio + (unsigned)(position/10)) |= (1<<((position%10)*3));
+    }
+}
+
+void GPIOCore::setGPIOout(int position, bool state)
+{
+
+}
+
+void GPIOCore::startReadInputs()
+{
 
 }

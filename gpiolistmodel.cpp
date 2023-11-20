@@ -9,9 +9,11 @@ GPIOListModel::GPIOListModel(QObject *parent)
         switch (i) {
         case 1: gpioItem->setName("3.3V"); break;
         case 2: gpioItem->setName("5V"); break;
-        case 3: gpioItem->setGPIOnumber(2); break;
+//        case 3: gpioItem->setGPIOnumber(2); break;
+        case 3: gpioItem->setName("I2C1 SDA"); break;
         case 4: gpioItem->setName("5V"); break;
-        case 5: gpioItem->setGPIOnumber(3); break;
+//        case 5: gpioItem->setGPIOnumber(3); break;
+        case 5: gpioItem->setName("I2C1 SCL"); break;
         case 6: gpioItem->setName("GND"); break;
         case 7: gpioItem->setGPIOnumber(4); break;
         case 8: gpioItem->setGPIOnumber(14); break;
@@ -106,11 +108,23 @@ QHash<int, QByteArray> GPIOListModel::roleNames() const
     return names;
 }
 
+void GPIOListModel::initialConfiguration()
+{
+    for(GPIOitem* item : m_GPIOList){
+        if(item->GPIOnumber() >= 0){
+            emit configureGPIO(item->GPIOnumber(), item->mode());
+        }
+    }
+}
+
 void GPIOListModel::changeMode(int pos, int mode)
 {
     beginResetModel();
     m_GPIOList[pos]->setMode(mode);
     endResetModel();
+
+    emit configureGPIO(m_GPIOList[pos]->GPIOnumber(), m_GPIOList[pos]->mode());
+
     QSettings settings("Dima", "RaspberryPiGPIO");
     settings.beginWriteArray("GPIO", 40);
     settings.setArrayIndex(pos);
