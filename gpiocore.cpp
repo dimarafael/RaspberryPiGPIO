@@ -46,7 +46,14 @@ void GPIOCore::configureGPIO(int position, int mode)  // 0 - input, 1 - output
 
 void GPIOCore::setGPIOout(int position, bool state)
 {
-
+    qDebug() << "setGPIOout: GPIO=" << position << ", state=" << state;
+    if (m_gpio != nullptr){
+        if(state){ // ON
+            *(m_gpio + 7) = 1 << position;
+        } else {// OFF
+            *(m_gpio + 10) = 1 << position;
+        }
+    }
 }
 
 void GPIOCore::startReadInputs()

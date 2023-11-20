@@ -11,13 +11,14 @@ int main(int argc, char *argv[])
     GPIOListModel *gpioListModel = new GPIOListModel(&app);
     qmlRegisterSingletonInstance("com.dima.GPIOListModel", 1, 0, "GPIOListModel", gpioListModel);
 
-    QObject::connect(gpioListModel,&GPIOListModel::setGPIOout,&app, [](int GPIOnumber, bool state){
-        qDebug() << "GPIOnumber =" << GPIOnumber << " state =" << state;
-    });
+//    QObject::connect(gpioListModel,&GPIOListModel::setGPIOout,&app, [](int GPIOnumber, bool state){
+//        qDebug() << "GPIOnumber =" << GPIOnumber << " state =" << state;
+//    });
 
     GPIOCore *gpioCore = new GPIOCore(&app);
 
     QObject::connect(gpioListModel, &GPIOListModel::configureGPIO, gpioCore, &GPIOCore::configureGPIO);
+    QObject::connect(gpioListModel, &GPIOListModel::setGPIOout, gpioCore, &GPIOCore::setGPIOout);
 
     gpioListModel->initialConfiguration();
 
