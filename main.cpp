@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include "gpiocore.h"
 #include "gpiolistmodel.h"
+#include <QThread>
 
 int main(int argc, char *argv[])
 {
@@ -11,11 +12,11 @@ int main(int argc, char *argv[])
     GPIOListModel *gpioListModel = new GPIOListModel(&app);
     qmlRegisterSingletonInstance("com.dima.GPIOListModel", 1, 0, "GPIOListModel", gpioListModel);
 
-//    QObject::connect(gpioListModel,&GPIOListModel::setGPIOout,&app, [](int GPIOnumber, bool state){
-//        qDebug() << "GPIOnumber =" << GPIOnumber << " state =" << state;
-//    });
-
-    GPIOCore *gpioCore = new GPIOCore(&app);
+    GPIOCore *gpioCore = new GPIOCore();
+    QThread *threadGpioCore = new QThread;
+    QObject::connect(threadGpioCore, &QThread::started, gpioCore, &GPIOCore::startReadInputs);
+    gpioCore->moveToThread(threadGpioCore);
+    threadGpioCore->start();
 
     QObject::connect(gpioListModel, &GPIOListModel::configureGPIO, gpioCore, &GPIOCore::configureGPIO);
     QObject::connect(gpioListModel, &GPIOListModel::setGPIOout, gpioCore, &GPIOCore::setGPIOout);

@@ -58,5 +58,5 @@ void GPIOCore::setGPIOout(int position, bool state)
 
 void GPIOCore::startReadInputs()
 {
-
+    qDebug() << "startReadInputs";
 }
